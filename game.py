@@ -4,7 +4,7 @@ import random
 import keyboard
 import main
 
-exitFlag = 0
+exitFlag = 0  #
 
 
 def game(field, character, point, timer, speedIncrement):
