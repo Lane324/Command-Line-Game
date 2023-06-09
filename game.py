@@ -63,7 +63,7 @@ def timer(timer):
     exitFlag = 1
 
 
-def exitGame(character, filePath):
+def exitGame(character, filePath, newName, timeLength):
     global exitFlag
     while True and exitFlag == 0:
         if keyboard.is_pressed("escape"):
@@ -76,19 +76,43 @@ def exitGame(character, filePath):
         entry = file.read()
     file.close()
 
-    index = entry.find(":")
-    name = entry[0:index]
-    highscore = int(entry[index + 1 :])
+    index = []
+    j = 0
+    for i in entry:
+        if i == ":":
+            index.append(j)
+        j += 1
 
-    print(f"Curent highscore is {highscore} set by {name}")
+    name = entry[0 : index[0]]
+    highscore = int(entry[index[0] + 1 : index[1]])
+    scoreSec = int(entry[index[1] + 1 :])
+
+    print(
+        f"Curent highscore is {highscore} set by {name} with a score per second of {scoreSec}"
+    )
     if character.score > highscore:
         print("NEW HIGHSCORE SET!!!")
-        newName = input("Please enter your name.\n")
+        # newName = input("Please enter your name.\n")
         print(f"New highscore: {character.score}")
         with open(filePath, "w") as file:
-            file.write(f"{newName}: {str(character.score)}")
+            file.write(
+                f"{newName}: {str(character.score)}: {str(character.score/timeLength)}"
+            )
     else:
         print("No new highscore set")
+
+
+def startGame():
+    print(
+        "\nWelcome to the Command Line Game\nThe goal is to move your charater to collect the most amount of points before the time runs out\n"
+    )
+    name = input("Please enter your name: ")
+    charaterSymbol = input("Enter the symbol to represent your character: ")
+    pointSymbol = input("Enter the symbol to represent the point: ")
+    timeLimit = int(input("Enter the time limit: "))
+    input("\nPress 'ENTER' to start")
+
+    return name, charaterSymbol, pointSymbol, timeLimit
 
 
 if __name__ == "__main__":

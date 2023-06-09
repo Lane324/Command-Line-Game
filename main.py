@@ -5,13 +5,17 @@ import objects
 
 
 def main():
-    field = objects.Field(x_size=10, y_size=5, symbol="-")
-    character = objects.Character(x_pos=5, y_pos=5, symbol="0", speed=0.1)
-    point = objects.Point(x_pos=1, y_pos=1, symbol="X")
-    timer = objects.Timer(length=30)
+    name, characterSymbol, pointSymbol, timeLimit = game.startGame()
+
+    field = objects.Field(x_size=10, y_size=5, symbol="_")
+    character = objects.Character(x_pos=5, y_pos=5, symbol=characterSymbol, speed=0.1)
+    point = objects.Point(x_pos=1, y_pos=1, symbol=pointSymbol)
+    timer = objects.Timer(length=timeLimit)
     speedIncrement = 0.015
 
-    exitThread = Thread(target=game.exitGame, args=(character, "highscore.txt"))
+    exitThread = Thread(
+        target=game.exitGame, args=(character, "highscore.txt", name, timeLimit)
+    )
     gameThread = Thread(
         target=game.game,
         args=(field, character, point, timer, speedIncrement),
